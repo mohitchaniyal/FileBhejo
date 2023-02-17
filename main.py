@@ -7,14 +7,18 @@ class FileBhejo:
     owner="Mohit Kumar Chaniyal"
     def __init__(self):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-        host = socket.gethostname() 
+        host = socket.gethostname()
         port = 12345       
         self.local_address=(host,port)
     def send_file(self,remote_address):
+        root = tk.Tk()
+        root.withdraw()
+        file_path = filedialog.askopenfilename()
+        filename=file_path.split('/')[-1]
         self.s.connect(remote_address)
-        filename="file.txt"
+        
         filesize=os.path.getsize(filename)
-        file=open(filename,"rb")
+        file=open(file_path,"rb")
         self.s.sendall(filename.encode())
         self.s.sendall(str(filesize).encode())
         chunk=file.read(4096)
@@ -38,4 +42,3 @@ class FileBhejo:
             recieved+=len(chunk)
         file.close()
         conn.close()
-
