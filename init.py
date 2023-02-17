@@ -7,3 +7,10 @@ root.withdraw()
 folder_path = filedialog.askdirectory()
 
 print(folder_path)
+
+root = tk.Tk()
+root.withdraw()
+
+file_path = filedialog.askopenfilename()
+
+print(file_path.split('/')[-1])
