@@ -1,64 +1,41 @@
 import socket
 import os
+import tkinter as tk
+from tkinter import filedialog
+class FileBhejo:
+    name="FileBhejo"
+    owner="Mohit Kumar Chaniyal"
+    def __init__(self):
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+        host = socket.gethostname() 
+        port = 12345       
+        self.local_address=(host,port)
+    def send_file(self,remote_address):
+        self.s.connect(remote_address)
+        filename="file.txt"
+        filesize=os.path.getsize(filename)
+        file=open(filename,"rb")
+        self.s.sendall(filename.encode())
+        self.s.sendall(str(filesize).encode())
+        chunk=file.read(4096)
+        while chunk:
+            self.s.sendall(chunk)
+            chunk=file.read(4096)
+        file.close()
+        self.s.close()
+    def receive_file(self):
+        self.s.bind(self.local_address)
+        self.s.listen(1)
+        conn,add=self.s.accept()
+        print("Connected to:",add)
+        filename=self.s.recv(4096).decode()
+        filesize=self.s.recv(4096).decode()
+        file=open(filename,"wb")
+        recieved=0
+        while recieved<filesize:
+            chunk=conn.recv(4096)
+            file.write(chunk)
+            recieved+=len(chunk)
+        file.close()
+        conn.close()
 
-# Create a socket object
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-
-# Get local machine name
-host = socket.gethostname()                           
-
-# Reserve a port for your service
-port = 12345                                           
-
-# Connect to the server
-s.connect((host, port))
-
-# Open the file
-filename = "file.txt"
-filesize = os.path.getsize(filename)
-file = open(filename, "rb")
-
-# Send the file size
-s.sendall(str(filesize).encode())
-
-# Send the file
-chunk = file.read(4096)
-while chunk:
-    s.sendall(chunk)
-    chunk = file.read(4096)
-
-# Close the file and socket
-file.close()
-s.close()
-import socket
-import os
-
-# Create a socket object
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-
-# Get local machine name
-host = socket.gethostname()                           
-
-# Reserve a port for your service
-port = 12345                                           
-
-# Connect to the server
-s.connect((host, port))
-
-# Open the file
-filename = "file.txt"
-filesize = os.path.getsize(filename)
-file = open(filename, "rb")
-
-# Send the file size
-s.sendall(str(filesize).encode())
-
-# Send the file
-chunk = file.read(4096)
-while chunk:
-    s.sendall(chunk)
-    chunk = file.read(4096)
-
-# Close the file and socket
-file.close()
-s.close()
