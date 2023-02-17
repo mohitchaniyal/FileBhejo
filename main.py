@@ -7,9 +7,10 @@ class FileBhejo:
     owner="Mohit Kumar Chaniyal"
     def __init__(self):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-        host = socket.gethostname()
+        host = socket.gethostbyname()
         port = 12345       
         self.local_address=(host,port)
+        print(self.local_address)
     def send_file(self,remote_address):
         root = tk.Tk()
         root.withdraw()
@@ -42,3 +43,11 @@ class FileBhejo:
             recieved+=len(chunk)
         file.close()
         conn.close()
+app=FileBhejo()
+while True :
+    ask=input("S for send R for recieve")
+    if ask.lower()=="s":
+        remote_address=input("Enter IP"),12345
+        app.send_file(remote_address)
+    elif ask.lower()=="r":
+        app.receive_file()
