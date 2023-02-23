@@ -7,7 +7,8 @@ class FileBhejo:
     owner="Mohit Kumar Chaniyal"
     def __init__(self):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-        host = socket.gethostbyname()
+        
+        host = socket.gethostbyname(socket.gethostname())
         port = 12345       
         self.local_address=(host,port)
         print(self.local_address)
@@ -18,7 +19,7 @@ class FileBhejo:
         filename=file_path.split('/')[-1]
         self.s.connect(remote_address)
         
-        filesize=os.path.getsize(filename)
+        filesize=os.path.getsize(file_path)
         file=open(file_path,"rb")
         self.s.sendall(filename.encode())
         self.s.sendall(str(filesize).encode())
@@ -33,8 +34,8 @@ class FileBhejo:
         self.s.listen(1)
         conn,add=self.s.accept()
         print("Connected to:",add)
-        filename=self.s.recv(4096).decode()
-        filesize=self.s.recv(4096).decode()
+        filename=conn.recv(4096).decode()
+        filesize=int(conn.recv(4096).decode())
         file=open(filename,"wb")
         recieved=0
         while recieved<filesize:
