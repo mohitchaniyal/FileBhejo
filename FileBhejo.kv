@@ -1,0 +1,166 @@
+WindowManager
+    HomeScreen:
+    RecieveScreen:
+    FileChooserScreen:
+    SendScreen:
+    GetIPScreen:
+    
+<HomeScreen>
+    name:"home_screen"
+    BoxLayout:
+        orientation:"vertical"
+        size:root.width,root.height
+        padding:10
+        spacing:2
+            
+        GridLayout:
+            cols:1
+            spacing:20
+            Label:
+                size_hint:1,.2
+                text:"FileBhejo"
+                font_size:60
+            Label:
+                id:IP
+                text:""
+                font_size:40
+                size_hint:1,.2
+        
+            Label:
+                id:port
+                text:""
+                font_size:40
+                size_hint:1,.2
+            Button:
+                text:"Send"
+                font_size:40
+                size_hint:1,.2
+                on_press:
+                    app.root.current="get_ip_screen"
+                    root.manager.transition.direction="left"
+            Button:
+                text:"Recieve"
+                font_size:40
+                size_hint:1,.2
+                on_press:
+                    app.root.current="recieve_screen"
+                    root.manager.transition.direction="left"
+
+<RecieveScreen>
+    name:"recieve_screen"
+    BoxLayout:
+        orientation:"vertical"
+        padding:10
+        spacing:2
+        Label:
+            id:status
+            text:""
+            size_hint:1,.2
+        Label:
+            id:address
+            text:""
+            size_hint:1,.2
+        Label:
+            id:connected
+            text:""
+            size_hint:1,.2
+        Image:
+            source:"not_connected.png"
+            size_hint:1,.2
+            
+        Button:
+            text:"Cancel"
+            size_hint:1,.2
+            on_press:
+                root.cancel()
+                app.root.current="home_screen"
+                root.manager.transition.direction="right"
+
+<FileChooserScreen>
+    name:"file_chooser_screen"
+    BoxLayout:
+        orientation:"vertical"
+        size:root.width,root.height
+        spacing:10
+        padding:10
+        
+        FileChooserListView:
+            size_hint:1,.8
+            id:filechooser
+            on_selection:root.selected(filechooser.selection)
+        Button:
+            text:"Select"
+            size_hint:1,.2
+            on_press:
+                app.root.current="send_screen"
+                root.manager.transition.direction="right"
+
+<GetIPScreen>
+    name:"get_ip_screen"
+    BoxLayout:
+        orientation:"vertical"
+        size:root.width,root.height
+        spacing:10
+        padding:10
+        Label:
+            id:address
+            size_hint:1,.1
+        Image:
+            id:image
+            size_hint:1,.4
+            source:"not_connected.png"
+        Label:
+            text: "Enter Remote Ip"
+            size_hint:1,.2
+        TextInput:
+            id:remote_ip
+            size_hint:1,.1
+        GridLayout:
+            cols:2
+            spacing:10
+            padding:10
+            size_hint:1,.2
+            Button:
+                id:connect
+                desabled:False
+                text:"Connect"
+                on_press: root.connect()
+            Button:
+                id:select_file
+                desabled:True
+                text:"Select File"
+
+            
+            
+<SendScreen>
+    name:"send_screen"
+    BoxLayout:
+        orientation:"vertical"
+        padding:10
+        spacing:2
+        Label:
+            id:status
+            text:""
+            size_hint:1,.1
+        Label:
+            id:address
+            text:""
+            size_hint:1,.2
+        Label:
+            id:connected
+            text:""
+            size_hint:1,.2
+        Image:
+            source:"wifi.png"
+            size_hint:1,.2
+        Label:
+            text:filename
+            text:""
+            
+        Button:
+            text:"Cancel"
+            size_hint:1,.2
+            on_press:
+                root.cancel()
+                app.root.current="home_screen"
+                root.manager.transition.direction="right"
